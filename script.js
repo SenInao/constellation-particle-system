@@ -11,14 +11,19 @@ gradient.addColorStop(1, "red")
 ctx.fillStyle = gradient
 ctx.strokeStyle = "white"
 
+const defaultVel = 0.5
+const numberOfParticles = 600
+const mouseRadius = 150
+const distanceBetweenParticles = 100
+
 class Particle {
   constructor(effect){
     this.effect = effect
-    this.radius = Math.floor(Math.random() * 30 + 1)
+    this.radius = Math.floor(Math.random() * 11 + 1)
     this.x = this.radius + Math.random() * (this.effect.width - this.radius*2)
     this.y = this.radius + Math.random() * (this.effect.height - this.radius*2)
-    this.vx = Math.random() * 1 - 0.5
-    this.vy = Math.random() * 1 - 0.5
+    this.vx = Math.random() * defaultVel - defaultVel/2
+    this.vy = Math.random() * defaultVel - defaultVel/2
     this.pushX = 0
     this.pushY = 0
     this.friction = 0.7
@@ -81,13 +86,13 @@ class Effect {
     this.width = this.canvas.width
     this.height = this.canvas.height
     this.particles = []
-    this.numberOfParticles = 300
+    this.numberOfParticles = numberOfParticles
     
     this.mouse = {
-      x: 0,
-      y: 0,
+      x: -mouseRadius,
+      y: -mouseRadius,
       pressed: false,
-      radius: 150
+      radius: mouseRadius
     }
 
     this.createParticles()
@@ -126,7 +131,7 @@ class Effect {
 
   connectParticles() {
     const context = this.context
-    const maxDistance = 100
+    const maxDistance = distanceBetweenParticles
     for (let a = 0; a < this.particles.length; a++) {
       for (let b = a; b < this.particles.length; b++) {
         const dx = this.particles[a].x - this.particles[b].x
